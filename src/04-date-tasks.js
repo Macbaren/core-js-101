@@ -18,8 +18,8 @@
  *    'Tue, 26 Jan 2016 13:48:02 GMT' => Date()
  *    'Sun, 17 May 1998 03:00:00 GMT+01' => Date()
  */
-function parseDataFromRfc2822(/* value */) {
-  throw new Error('Not implemented');
+function parseDataFromRfc2822(value) {
+  return new Date(value);
 }
 
 /**
@@ -33,8 +33,8 @@ function parseDataFromRfc2822(/* value */) {
  *    '2016-01-19T16:07:37+00:00'    => Date()
  *    '2016-01-19T08:07:37Z' => Date()
  */
-function parseDataFromIso8601(/* value */) {
-  throw new Error('Not implemented');
+function parseDataFromIso8601(value) {
+  return new Date(value);
 }
 
 /**
@@ -51,9 +51,15 @@ function parseDataFromIso8601(/* value */) {
  *    Date(2012,1,1)    => true
  *    Date(2015,1,1)    => false
  */
-function isLeapYear(/* date */) {
-  throw new Error('Not implemented');
+function isLeapYear(date) {
+  const year = date.getFullYear();
+  return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
 }
+
+// if (year is not divisible by 4) then (it is a common year)
+// else if (year is not divisible by 100) then (it is a leap year)
+// else if (year is not divisible by 400) then (it is a common year)
+// else (it is a leap year)
 
 /**
  * Returns the string representation of the timespan between two dates.
@@ -72,6 +78,20 @@ function isLeapYear(/* date */) {
  */
 function timeSpanToString(/* startDate, endDate */) {
   throw new Error('Not implemented');
+  // let gap = Math.abs(endDate - startDate) / 1000;
+
+  // const hours = `0${Math.floor(gap / 3600) % 24}`.slice(-2);
+  // gap -= hours * 3600;
+
+  // const minutes = `0${Math.floor(gap / 60) % 60}`.slice(-2);
+  // gap -= minutes * 60;
+
+  // const seconds = `0${gap % 60}`.slice(-2);
+  // gap -= seconds * 60;
+
+  // const mseconds = `00${gap}`.slice(-3);
+
+  // return `${hours}:${minutes}:${seconds}.${mseconds}`;
 }
 
 /**

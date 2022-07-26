@@ -519,8 +519,18 @@ function distinct(arr) {
  *    "Poland" => ["Lodz"]
  *   }
  */
-function group(/* array, keySelector, valueSelector */) {
-  throw new Error('Not implemented');
+function group(array, keySelector, valueSelector) {
+  const map = new Map();
+  let key;
+
+  array.map((el) => {
+    key = keySelector(el);
+    return map.has(key)
+      ? map.get(key).push(valueSelector(el))
+      : map.set(key, [valueSelector(el)]);
+  });
+
+  return map;
 }
 
 /**
@@ -536,8 +546,12 @@ function group(/* array, keySelector, valueSelector */) {
  *   [[1, 2], [3, 4], [5, 6]], (x) => x     =>   [ 1, 2, 3, 4, 5, 6 ]
  *   ['one','two','three'], x=>x.split('')  =>   ['o','n','e','t','w','o','t','h','r','e','e']
  */
-function selectMany(/* arr, childrenSelector */) {
-  throw new Error('Not implemented');
+function selectMany(arr, childrenSelector) {
+  return arr.reduce(
+    (acc, rec) => acc.concat(childrenSelector(rec)),
+    // eslint-disable-next-line comma-dangle
+    []
+  );
 }
 
 /**
@@ -552,8 +566,12 @@ function selectMany(/* arr, childrenSelector */) {
  *   ['one','two','three'], [2]       => 'three'  (arr[2])
  *   [[[ 1, 2, 3]]], [ 0, 0, 1 ]      => 2        (arr[0][0][1])
  */
-function getElementByIndexes(/* arr, indexes */) {
-  throw new Error('Not implemented');
+function getElementByIndexes(arr, indexes) {
+  return indexes.reduce(
+    (acc, rec) => acc.filter((_, ind) => ind === rec)[0],
+    // eslint-disable-next-line comma-dangle
+    arr
+  );
 }
 
 /**
@@ -571,11 +589,16 @@ function getElementByIndexes(/* arr, indexes */) {
  *     head     tail
  *
  *   [ 1, 2 ]  => [ 2, 1 ]
- *   [ 1, 2, 3, 4, 5, 6, 7, 8 ]   =>  [ 5, 6, 7, 8, 1, 2, 3, 4 ]
+ *   [ 1, 2, 3, 4,   5,   6, 7, 8 ,9]   =>  [ 5, 6, 7, 8, 1, 2, 3, 4 ]
  *
  */
-function swapHeadAndTail(/* arr */) {
-  throw new Error('Not implemented');
+function swapHeadAndTail(arr) {
+  if (arr.length === 1) return arr;
+  const halfLength = arr.length / 2;
+  const head = arr.slice(0, Math.floor(halfLength));
+  const middle = arr.length % 2 === 0 ? '' : arr[Math.floor(halfLength)];
+  const tail = arr.slice(Math.ceil(halfLength));
+  return tail.concat(middle, head).filter((el) => el);
 }
 
 module.exports = {
